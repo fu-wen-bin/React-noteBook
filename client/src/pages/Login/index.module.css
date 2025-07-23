@@ -1,0 +1,46 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  padding: 0 0.3rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+.login .title {
+  height: 0.6933rem;
+  font-size: 0.48rem;
+  margin-top: 1.12rem;
+  text-align: center;
+  line-height: 0.6933rem;
+}
+.login-wrapper {
+  width: 7.44rem;
+  height: 10.77rem;
+  border: 1px solid #d9d9d9;
+  margin: 1.7rem auto 0;
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0.533rem rgba(63, 69, 255, 0.3);
+  overflow: hidden;
+}
+.login .avatar {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 1rem auto 0.77rem auto;
+}
+.login .avatar-img {
+  width: 100%;
+}
+.login-tip {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #101010;
+}
+:root:root {
+  --rv-cell-required-color: rgba(255, 255, 255, 0);
+}
+/*# sourceMappingURL=index.module.css.map */
