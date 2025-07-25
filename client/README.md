@@ -61,3 +61,25 @@ rest.css
 `axios`配置文件(axios.defaults.baseURL = 'http://192.168.xx.xx:3000')后：
 
 > axios.post("/api/login", {username, password})
+
+## 登录鉴权
+
+1. 用户未登录就访问首页时，首页在加载时会向后端发送请求
+2. 后端在登录接口中生成一个令牌，将令牌一起返回给前端，前端进行浏览器本地保存
+    - 可以使用`localStorage`或`sessionStorage`来保存令牌
+    - 例如：`localStorage.setItem('token', response.data.token)`
+3. 前端必须在后续所有的请求中携带这个令牌供后端校验，如果后端不通过则返回`401`状态码
+4. 前端收到后端返回的信息后就执行相应操作
+
+## 问题及解决
+
+1. `Vant`移动端组件库某些组件不兼容`React19`，出现样式问题。
+
+   解决方案：使用其他第三方库来替换需要的组件，或者使用`Ant Design Mobile`等其他`UI`库。
+
+2. 登录鉴权的token在规定时间后会过期，过期后就需要重新登录 -- **需要无感刷新**
+
+   解决方案：
+      - 在登录时，后端返回同时返回两个token，一个时效短的`access token`，一个时效长的`refresh token`
+      - `access token`用于权限校验，`refresh token`用于获取新的`access token`
+      - 在`access token`过期后到`refresh token`过期前，接口再次被调用时，前端会自动请求获取新的`access token`和`refresh token`

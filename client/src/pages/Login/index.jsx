@@ -3,16 +3,26 @@ import styles from './index.module.less'
 import React from 'react'
 import { Button, Form, Input } from 'react-vant'
 import axios from '../../api'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router'
 
 export default function Login () {
+
   const [form] = Form.useForm()
+  const navigate = useNavigate()
 
   const onFinish = values => {
     console.log(values)
     axios.post('/user/login', values)
-         .then(res => {
-           console.log(res)
-         })
+      .then(res => {
+        console.log(res)
+        // 将token存储到localStorage中
+        localStorage.setItem('access_token', res.access_token)
+        localStorage.setItem('refresh_token', res.refresh_token)
+        // 登录成功弹窗
+        toast.success(res.message)
+        navigate('/noteClass')
+      })
   }
 
   return (
