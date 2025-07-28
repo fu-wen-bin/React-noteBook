@@ -1,18 +1,77 @@
-import axios from '../../api'
-import { useEffect } from 'react'
+import { useState } from 'react'
 import styles from './index.module.less'
+import { Edit, LikeO, Search, WapNav } from '@react-vant/icons'
+import Menu from '@components/Menu'
+import { useNavigate } from 'react-router'
+
+// 随机颜色，颜色偏亮色系
+const randomColor = () => {
+  const r = Math.floor(Math.random() * 100) + 100
+  const g = Math.floor(Math.random() * 100) + 100
+  const b = Math.floor(Math.random() * 100) + 100
+  return `rgb(${r}, ${g}, ${b})`
+}
+const noteClassList = [
+  { title: '美食', id: 1 },
+  { title: '旅行', id: 2 },
+  { title: '恋爱', id: 3 },
+  { title: '学习', id: 4 },
+  { title: '吵架', id: 5 },
+]
 
 export default function NoteClass () {
+  const [showMenu, setShowMenu] = useState(false)
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    axios.get('/user/test').then(res => {
-      console.log(res)
-    })
-  }, [])
+  function goNoteList (category) {
+    // 这里的 category 是 noteClassList 中的 title
+    // 这种方法需要在配置路由时使用动态路由，即在路由中使用 :category 来表示动态参数
+    navigate(`/noteList/${category}`)
+
+    // 也可以用?进行传参
+    // navigate(`/noteList?category=${category}`)
+    // 这种方式需要在 NoteList 中使用 useLocation 来获取路由参数
+    // const location = useLocation()
+    // const category = new URLSearchParams(location.search).get('category')
+  }
 
   return (
     <div className={styles['note-class-wrapper']}>
+      <div className={[
+        `${styles['note-class']}`,
+        `${showMenu ? styles['hide'] : ''}`].join(' ')}>
+        <header>
+          <div onClick={() => {setShowMenu(true)}}>
+            <WapNav className={styles['icon']}/>
+          </div>
+          <div>
+            <Edit className={styles['icon']}/>
+            <LikeO className={styles['icon']}/>
+            <Search className={styles['icon']}/>
+          </div>
+        </header>
+        <section>
+          {
+            noteClassList.map(item => {
+              return (
+                <div key={item.id} className={styles['note-class-item']}
+                     style={{ backgroundColor: randomColor() }}
+                     onClick={() => {goNoteList(item.title)}}
+                >
+                  <span
+                    className={styles['note-class-item-title']}>{item.title}</span>
+                </div>
+              )
+            })
+          }
+        </section>
+      </div>
 
+      <div className={[
+        `${styles['menu']}`,
+        `${showMenu ? styles['show'] : ''}`].join(' ')}>
+        <Menu setShowMenu={setShowMenu}/>
+      </div>
     </div>
   )
 }

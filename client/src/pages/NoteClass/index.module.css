@@ -1,0 +1,58 @@
+.note-class-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+.note-class-wrapper .note-class {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 0.5866rem;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  transform: translateX(0);
+  transition: all 0.5s ease-in-out;
+}
+.note-class-wrapper .note-class header {
+  display: flex;
+  height: 1.2rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+}
+.note-class-wrapper .note-class header .icon {
+  margin: 0 5px;
+}
+.note-class-wrapper .note-class section {
+  width: 100%;
+}
+.note-class-wrapper .note-class section .note-class-item {
+  height: 3.2rem;
+  border-radius: 0.3rem;
+  margin-bottom: 0.64rem;
+  box-shadow: 0 0 10px 2px #ccc;
+  overflow: hidden;
+}
+.note-class-wrapper .note-class section .note-class-item-title {
+  display: block;
+  margin-top: 0.5333rem;
+  text-align: center;
+  font-size: 0.5333rem;
+  color: #fff;
+}
+.note-class-wrapper .menu {
+  width: 100%;
+  height: 100%;
+  transform: translateX(-100%);
+  transition: all 0.5s ease-in-out;
+}
+.note-class-wrapper .hide {
+  transform: translateX(100%);
+}
+.note-class-wrapper .show {
+  transform: translateX(0);
+}
+/*# sourceMappingURL=index.module.css.map */

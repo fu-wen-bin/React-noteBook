@@ -80,6 +80,52 @@ rest.css
 2. 登录鉴权的token在规定时间后会过期，过期后就需要重新登录 -- **需要无感刷新**
 
    解决方案：
-      - 在登录时，后端返回同时返回两个token，一个时效短的`access token`，一个时效长的`refresh token`
-      - `access token`用于权限校验，`refresh token`用于获取新的`access token`
-      - 在`access token`过期后到`refresh token`过期前，接口再次被调用时，前端会自动请求获取新的`access token`和`refresh token`
+    - 在登录时，后端返回同时返回两个token，一个时效短的`access token`，一个时效长的`refresh token`
+    - `access token`用于权限校验，`refresh token`用于获取新的`access token`
+    - 在`access token`过期后到`refresh token`过期前，接口再次被调用时，前端会自动请求获取新的`access token`和
+      `refresh token`
+    - 如果两个token都过期了，则需要重新登录
+
+3. 路由传参
+
+   1. 使用`useNavigate`进行路由跳转时，可以通过不同方式传递参数。
+
+      ```js
+      navigate('/home?id=1')  // useSearchParams()// 获取路由参数
+      
+      // 使用示例
+   
+      // 获取当前路由信息
+      const [searchParams] = useSearchParams()
+      // 获取路由参数
+      console.log(searchParams.get('category'))
+      ```
+
+   2. 使用`useParams`获取路由参数。
+   
+      ```js
+      navigate('/home/1')  // 配置路由时 path:'home/:id'   useParams() // 获取当前路由参数
+       
+      // 使用示例
+      const params = useParams()
+      return(
+        <div>
+          NoteList ---- {params.category}
+        </div>
+      )
+      ```
+
+   3. 使用`state`传递参数，这种方式不会显示在地址栏中。
+
+      ```js
+      navigate('/home', { // 和第一种一样，但不会显示在地址栏
+        state: {
+          id: 1,
+        },
+      })  //useLocation() // 获取路由参数
+      
+      // 使用示例
+      const { state } = useLocation()  // 从注册页传过来的参数
+      console.log(state.category)  
+      ```
+

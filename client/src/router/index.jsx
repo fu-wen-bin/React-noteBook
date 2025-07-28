@@ -3,6 +3,7 @@ import React from 'react'
 
 const Login = React.lazy(() => import('../pages/Login'))
 const NoteClass = React.lazy(() => import('../pages/NoteClass'))
+const NoteList = React.lazy(() => import('../pages/NoteList'))
 
 const routes = [
   {
@@ -18,6 +19,10 @@ const routes = [
     path: '/noteClass',
     element: <NoteClass/>,
   },
+  {
+    path:'/noteList/:category',
+    element: <NoteList/>,
+  }
 ]
 
 function WrapperRoutes () {

@@ -39,6 +39,23 @@ const userLogin = (username, password) => {
   return allServices.query(sql, [username, password])
 }
 
+// 查找账户是否存在
+const findUser = (username) => {
+  const sql = 'SELECT * FROM user WHERE username = ?'
+  return allServices.query(sql, [username])
+}
+
+const userRegister = (data) => {
+  // 1. 构建插入语句
+  const sql = `INSERT INTO user (username, password, nickname, create_time)
+               VALUES ('${data.username}', '${data.password}', '${data.nickname}',
+                       '${data.create_time}');`
+  // 2. 执行插入
+  return allServices.query(sql, [data.username, data.password, data.nickname, data.create_time])
+}
+
 module.exports = {
   userLogin,
+  findUser,
+  userRegister,
 }

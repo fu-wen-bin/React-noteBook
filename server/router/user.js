@@ -1,7 +1,8 @@
 const Router = require('@koa/router')
 const router = new Router()
-const { userLogin } = require('../controllers/index.js')
-const { sign, verify, refreshVerify } = require('../utils/jwt.js')
+const { userLogin, findUser, userRegister } = require('../controllers/index.js')
+const { sign, refreshVerify } = require('../utils/jwt.js')
+const { escape } = require('../utils/security.js')
 
 router.prefix('/user') // 路由前缀，所有路由都以 /user 开头
 
@@ -9,8 +10,10 @@ router.prefix('/user') // 路由前缀，所有路由都以 /user 开头
 router.post('/login', async (ctx) => {
   // 1. 获取请求体中的数据
   // POST请求携带的参数都在请求体中
-  const { username, password } = ctx.request.body
+  let { username, password } = ctx.request.body
   console.log(`Received username: ${username}, password: ${password}`)
+  username = escape(username) // 转义标签
+  password = escape(password) // 转义标签
 
   // 2. 模拟登录验证--检验账号密码是否合法
   try {
@@ -51,11 +54,64 @@ router.post('/login', async (ctx) => {
   }
 })
 
-router.get('/test', verify(), (ctx) => {
-  // 该路由需要token验证
-  ctx.body = {
-    code: '1',
-    message: '验证通过',
+// 注册接口
+router.post('/register', async (ctx) => {
+  let { username, password, nickname } = ctx.request.body
+  // 验证数据不能为空
+  if (!username || !password || !nickname) {
+    ctx.body = {
+      code: '0',
+      message: '用户名、密码和昵称不能为空',
+      data: {},
+    }
+  }
+
+  // 转义标签
+  username = escape(username)
+  password = escape(password)
+  nickname = escape(nickname)
+
+  try {
+    // 检验账号是否存在
+    const res = await findUser(username)
+    if (res.length) {
+      ctx.body = {
+        code: '0',
+        message: '用户名已存在',
+        data: {},
+      }
+      return
+    }
+    // 数据库写入
+    const result = await userRegister(
+      { username, password, nickname, create_time: Date.now() })
+    if (result.affectedRows > 0) {
+      // 注册成功
+      ctx.body = {
+        code: '1',
+        message: '注册成功',
+        data: {
+          id: result.id,
+          username,
+          nickname,
+          create_time: Date,
+        },
+      }
+
+    } else {
+      // 注册失败
+      ctx.body = {
+        code: '0',
+        message: '注册失败，请稍后再试',
+        data: {},
+      }
+    }
+  } catch (error) {
+    ctx.body = {
+      code: '-1',
+      message: '服务器错误',
+      error: error.message,
+    }
   }
 })
 

@@ -139,4 +139,57 @@ koa
     app.use(bodyParser()) // 辅助koa解析请求体中的数据，ctx.request.body
     ```
 
+## 二、注册接口
+
+### 路由：`/user/register`
+
+- 请求方法：`POST`
+- 请求体：
+
+```json
+{
+  "username": "newUser",
+  "password": "newPass",
+  "nickname": "newNick"
+}
+```
+
+- 响应体：
+
+```json
+{
+  "code": 0,
+  "message": "注册成功",
+  "data": {
+    "userId": "12345"
+  }
+}
+```
+
+### 问题及解决
+
+1. 防止sql注入，类似`username = '<script>alert('123')</script>'`
+
+直接将传入的参数中的`<`、`>`、`'`和`"`替换为`&lt;`、`&gt;`、`&apos;`和`&quot;`，以防止恶意脚本执行。
+
+```js 
+// 规定替换的字符
+function sanitizeInput(input) {
+  return input
+    .replace(/</g, '&lt;')  // 替换小于号
+    .replace(/>/g, '&gt;')  // 替换大于号
+    .replace(/'/g, '&apos;') // 替换单引号
+    .replace(/"/g, '&quot;') // 替换双引号
+}
+
+// 使用示例
+function sanitizeUserInput(user) {
+  return {
+    username: sanitizeInput(user.username),
+    password: sanitizeInput(user.password),
+    nickname: sanitizeInput(user.nickname),
+  }
+}
+```
+
 
