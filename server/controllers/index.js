@@ -54,8 +54,27 @@ const userRegister = (data) => {
   return allServices.query(sql, [data.username, data.password, data.nickname, data.create_time])
 }
 
+// 根据笔记类型查找列表数据
+
+const findNoteListByType = (note_type, userName) => {
+  // 1. 构建查询语句
+  const sql = `SELECT * FROM note WHERE note_type = ? AND username = ?`
+  // 2. 执行查询
+  return allServices.query(sql, [note_type, userName])
+}
+
+// 根据笔记ID查询笔记详情
+const findNoteById = (noteId, userName) => {
+  // 1. 构建查询语句
+  const sql = `SELECT * FROM note WHERE id = ? AND username = ?`
+  // 2. 执行查询
+  return allServices.query(sql, [noteId, userName])
+}
+
 module.exports = {
   userLogin,
   findUser,
   userRegister,
+  findNoteListByType,
+  findNoteById, // 导出新添加的方法
 }

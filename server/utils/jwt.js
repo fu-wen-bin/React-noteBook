@@ -15,7 +15,8 @@ function verify () {
         const decoded = jwt.verify(token, '666')
 
         if (decoded.id) { // 合法
-          console.log(decoded)
+          // console.log(decoded)
+          ctx.userName = decoded.username
           await next()
         }
       } catch (error) {
@@ -37,7 +38,7 @@ function verify () {
   }
 }
 
-function refreshVerify(token) {
+function refreshVerify (token) {
   try {
     const decoded = jwt.verify(token, '666')
     if (decoded.id) {

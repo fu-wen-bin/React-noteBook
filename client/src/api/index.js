@@ -9,7 +9,9 @@ axios.defaults.baseURL = 'http://localhost:3000'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // 响应拦截器--用于处理响应数据(接收两个回调函数：成功回调和错误回调)
-axios.interceptors.response.use(response => {
+axios.interceptors.response.use(
+  // 成功回调--在成功回调中处理 2xx 状态码的响应
+  response => {
     // 注：当后端返回 4xx 或 5xx 状态码时，axios 会直接抛出异常，不会进入响应拦截器的成功回调
 
     if (response.status !== 200) {
@@ -64,7 +66,7 @@ axios.interceptors.response.use(response => {
         }
       }
 
-      if(status === 416){
+      if (status === 416) {
         toast.error(error.response.data.msg)
         // 可以在这里处理跳转到登录页
         setTimeout(() => {

@@ -4,6 +4,7 @@ import React from 'react'
 const Login = React.lazy(() => import('../pages/Login'))
 const NoteClass = React.lazy(() => import('../pages/NoteClass'))
 const NoteList = React.lazy(() => import('../pages/NoteList'))
+const NoteDetail = React.lazy(() => import('../pages/NoteDetail'))
 
 const routes = [
   {
@@ -22,6 +23,10 @@ const routes = [
   {
     path:'/noteList/:category',
     element: <NoteList/>,
+  },
+  {
+    path:'/noteDetail',
+    element: <NoteDetail/>,
   }
 ]
 

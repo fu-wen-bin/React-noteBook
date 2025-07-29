@@ -7,6 +7,7 @@
   overflow: hidden;
   position: relative;
 }
+
 .login .title {
   height: 0.6933rem;
   font-size: 0.48rem;
@@ -14,6 +15,7 @@
   text-align: center;
   line-height: 0.6933rem;
 }
+
 .login-wrapper {
   width: 7.44rem;
   height: 10.77rem;
@@ -23,6 +25,7 @@
   box-shadow: 0 0 0.533rem rgba(63, 69, 255, 0.3);
   overflow: hidden;
 }
+
 .login .avatar {
   width: 2.4rem;
   height: 2.4rem;
@@ -30,9 +33,11 @@
   overflow: hidden;
   margin: 1rem auto 0.77rem auto;
 }
+
 .login .avatar-img {
   width: 100%;
 }
+
 .login-tip {
   position: absolute;
   bottom: 30px;
@@ -40,7 +45,3 @@
   transform: translateX(-50%);
   color: #101010;
 }
-:root:root {
-  --rv-cell-required-color: rgba(255, 255, 255, 0);
-}
-/*# sourceMappingURL=index.module.css.map */
