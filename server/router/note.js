@@ -1,7 +1,8 @@
 const Router = require('@koa/router')
 const router = new Router()
 const { verify } = require('../utils/jwt')
-const { findNoteListByType, findNoteById } = require('../controllers/index.js')
+const { findNoteListByType, findNoteById, insertNote } = require(
+  '../controllers/index.js')
 
 // router.prefix('/note') // 路由前缀，所有路由都以 /user 开头
 
@@ -61,5 +62,47 @@ router.get('/findNoteById', verify(), async (ctx) => {
     }
   }
 })
+
+router.post('/note-publish', verify(), async (ctx) => {
+  const {
+    note_title,
+    note_content,
+    note_img,
+    note_type,
+    username,
+  } = ctx.request.body  // 从url获取笔记类型、标题和内容参数
+  try {
+    const res = await insertNote({
+      update_time: Date.now(),
+      create_time: Date.now(),
+      title: note_title,
+      content: note_content,
+      note_img: note_img,
+      note_type: note_type,
+      username: username,
+    })
+    if (res.affectedRows > 0) { // 插入成功
+      ctx.body = {
+        code: '1',
+        message: '日记发布成功',
+        data: `日记ID：${res.insertId}`, // 返回新插入日记的ID
+      }
+    } else { // 插入失败
+      ctx.body = {
+        code: '0',
+        message: '日记发布失败',
+        data: [],
+      }
+    }
+  } catch (error) {
+    ctx.status = 500
+    ctx.body = {
+      code: '-1',
+      message: '服务器错误',
+      error: error.message,
+    }
+  }
+})
+
 
 module.exports = router

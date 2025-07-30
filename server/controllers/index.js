@@ -48,17 +48,22 @@ const findUser = (username) => {
 const userRegister = (data) => {
   // 1. 构建插入语句
   const sql = `INSERT INTO user (username, password, nickname, create_time)
-               VALUES ('${data.username}', '${data.password}', '${data.nickname}',
+               VALUES ('${data.username}', '${data.password}', '${data.nickname}
+                       ',
                        '${data.create_time}');`
   // 2. 执行插入
-  return allServices.query(sql, [data.username, data.password, data.nickname, data.create_time])
+  return allServices.query(sql,
+    [data.username, data.password, data.nickname, data.create_time])
 }
 
 // 根据笔记类型查找列表数据
 
 const findNoteListByType = (note_type, userName) => {
   // 1. 构建查询语句
-  const sql = `SELECT * FROM note WHERE note_type = ? AND username = ?`
+  const sql = `SELECT *
+               FROM note
+               WHERE note_type = ?
+                 AND username = ?`
   // 2. 执行查询
   return allServices.query(sql, [note_type, userName])
 }
@@ -66,9 +71,28 @@ const findNoteListByType = (note_type, userName) => {
 // 根据笔记ID查询笔记详情
 const findNoteById = (noteId, userName) => {
   // 1. 构建查询语句
-  const sql = `SELECT * FROM note WHERE id = ? AND username = ?`
+  const sql = `SELECT *
+               FROM note
+               WHERE id = ?
+                 AND username = ?`
   // 2. 执行查询
   return allServices.query(sql, [noteId, userName])
+}
+
+// 插入新日记
+const insertNote = (data) => {
+  // 1. 构建插入语句
+  const sql = `INSERT INTO note (create_time, update_time, note_title, note_content, note_img, note_type, username)
+               VALUES (?, ?, ?, ?, ?, ?, ?)`
+  // 2. 执行插入
+  return allServices.query(sql, [
+    data.create_time,
+    data.update_time,
+    data.title,
+    data.content,
+    data.note_img,
+    data.note_type,
+    data.username])
 }
 
 module.exports = {
@@ -76,5 +100,7 @@ module.exports = {
   findUser,
   userRegister,
   findNoteListByType,
-  findNoteById, // 导出新添加的方法
+  findNoteById,
+  insertNote,
+  // 导出新添加的方法
 }

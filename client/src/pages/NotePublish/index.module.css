@@ -1,0 +1,35 @@
+.note-public {
+  min-height: 100vh;
+  background-color: #f7f8fa;
+  box-sizing: border-box;
+}
+.content {
+  padding: 15px;
+}
+.editor {
+  margin-bottom: 15px;
+}
+.note-wrap {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.type-select {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.type-select .type-name {
+  color: #735efd;
+  display: flex;
+  align-items: center;
+}
+.btn {
+  margin-top: 20px;
+}
+.btn :global(.rv-button) {
+  border-radius: 8px;
+}
+/*# sourceMappingURL=index.module.css.map */

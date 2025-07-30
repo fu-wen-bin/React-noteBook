@@ -2,7 +2,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 // 设置axios的默认地址配置
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://106.14.15.50:3000'
 
 // 告诉浏览器如果发送的是 post 请求，后端数据一定会以json格式返回。
 // 此时浏览器需要以解析 json 的方式来解析响应体
@@ -54,7 +54,6 @@ axios.interceptors.response.use(
               // 成功获取新的 token
               localStorage.setItem('access_token', res.access_token)
               localStorage.setItem('refresh_token', res.refresh_token)
-              toast.success('Token刷新成功')
 
               // 更改原请求的 Authorization 头
               originalRequest.headers.Authorization = res.access_token

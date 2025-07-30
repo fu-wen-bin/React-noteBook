@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './index.module.less'
 import { Edit, LikeO, Search, WapNav } from '@react-vant/icons'
 import Menu from '@components/Menu'
 import { useNavigate } from 'react-router'
+import useNoteClassStore from '../../store/noteClass.js'
+import axios from '@api'
+
 
 // 随机颜色，颜色偏亮色系
 const randomColor = () => {
@@ -11,15 +14,24 @@ const randomColor = () => {
   const b = Math.floor(Math.random() * 100) + 100
   return `rgb(${r}, ${g}, ${b})`
 }
-const noteClassList = [
-  { title: '美食', id: 1 },
-  { title: '旅行', id: 2 },
-  { title: '恋爱', id: 3 },
-  { title: '学习', id: 4 },
-  { title: '吵架', id: 5 },
-]
 
 export default function NoteClass () {
+
+
+  const varifyToken = localStorage.getItem('access_token')
+
+  const verifyUser = async () => {
+    axios.post('/user/access')
+      .then(res => {
+        console.log(res)
+      })
+  }
+
+  useEffect(() => {
+    verifyUser()
+  }, [varifyToken])
+
+  const { noteClassList } = useNoteClassStore()
   const [showMenu, setShowMenu] = useState(false)
   const navigate = useNavigate()
 
@@ -45,7 +57,8 @@ export default function NoteClass () {
             <WapNav className={styles['icon']}/>
           </div>
           <div>
-            <Edit className={styles['icon']}/>
+            <Edit className={styles['icon']}
+                  onClick={() => navigate('/notePublish')}/>
             <LikeO className={styles['icon']}/>
             <Search className={styles['icon']}/>
           </div>
@@ -54,7 +67,7 @@ export default function NoteClass () {
           {
             noteClassList.map(item => {
               return (
-                <div key={item.id} className={styles['note-class-item']}
+                <div key={item.title} className={styles['note-class-item']}
                      style={{ backgroundColor: randomColor() }}
                      onClick={() => {goNoteList(item.title)}}
                 >

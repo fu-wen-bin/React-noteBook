@@ -10,7 +10,6 @@ import formatDate from '@utils'
 
 export default function NoteList () {
   const [noteList, setNoteList] = useState([])
-
   /*// 获取当前路由信息
   const [searchParams] = useSearchParams()
   // 获取路由参数
@@ -54,7 +53,7 @@ export default function NoteList () {
           title={params.category}
           leftText="返回"
           rightText={<Search fontSize={20}/>}
-          onClickLeft={() => navigate(-1)}
+          onClickLeft={() => navigate('/noteClass')}
           onClickRight={() => {}}
         />
       </header>
@@ -66,7 +65,7 @@ export default function NoteList () {
                 noteList.map((item) => {
                   return (
                     <li key={item.id}
-                        onClick={() => navigate(`/noteDetail?id=${item.id}`)}>
+                        onClick={() => navigate(`/noteDetail?category=${params.category}&id=${item.id}`)}>
                       <div className={styles['img']}>
                         <img src={item.note_img} alt=""/>
                       </div>

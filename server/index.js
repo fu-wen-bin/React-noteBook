@@ -11,7 +11,14 @@ app.use(cors()) // 告诉浏览器允许前端跨域请求
 
 // 解析请求体中间件
 // 必须先让代码在路由之前
-app.use(bodyParser()) // 辅助koa解析请求体中的数据，ctx.request.body
+app.use(bodyParser(
+  {
+    enableTypes: ['json', 'form', 'text'], // 支持的请求体类型
+    jsonLimit: '50mb', // 限制json请求体大小为50MB
+    formLimit: '50mb', // 限制form请求体大小为50MB
+    textLimit: '50mb', // 限制text请求体大小为50MB
+  }
+)) // 辅助koa解析请求体中的数据，ctx.request.body
 
 /*app.use(async (ctx) => {
   console.log(ctx)

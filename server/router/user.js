@@ -3,6 +3,7 @@ const router = new Router()
 const { userLogin, findUser, userRegister } = require('../controllers/index.js')
 const { sign, refreshVerify } = require('../utils/jwt.js')
 const { escape } = require('../utils/security.js')
+const { verify } = require('../utils/jwt')
 
 router.prefix('/user') // 路由前缀，所有路由都以 /user 开头
 
@@ -146,5 +147,15 @@ router.post('/refresh', (ctx) => {
     }
   }
 })
+
+router.post('/access',verify(), (ctx) => {
+  // 这个接口用于验证 access_token 是否有效
+  // 如果有效，返回用户信息
+  ctx.body = {
+    code: '1',
+    msg: 'access_token 验证成功',
+  }
+})
+
 
 module.exports = router

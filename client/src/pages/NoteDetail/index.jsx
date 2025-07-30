@@ -1,7 +1,7 @@
 import styles from './index.module.less'
 import { ArrowLeft } from '@react-vant/icons'
 import { useEffect, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import axios from '@api'
 import toast from 'react-hot-toast'
 import { useSearchParams } from 'react-router'
@@ -11,9 +11,11 @@ export default function NoteDetail () {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const location = useLocation()
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
   const [searchParams] = useSearchParams()
   const noteId = searchParams.get('id')
+  const category = searchParams.get('category')
 
   useEffect(() => {
 
@@ -33,7 +35,7 @@ export default function NoteDetail () {
         toast.loading('加载中...')
 
         const res = await axios.get('/findNoteById', {
-          params: { id: noteId }
+          params: { id: noteId },
         })
 
         // 无论成功失败，先清除加载提示
@@ -47,7 +49,7 @@ export default function NoteDetail () {
           // 查询失败
           toast.error(res.message || '获取笔记详情失败')
           setTimeout(() => {
-            navigate(-1)
+            navigate(`/noteList/${category}`)
           }, 1000)
         }
       } catch (error) {
@@ -55,13 +57,12 @@ export default function NoteDetail () {
         console.error('获取笔记详情失败:', error)
         toast.error('获取笔记详情失败')
         setTimeout(() => {
-          navigate(-1)
+          navigate(`/noteList/${category}`)
         }, 1000)
       } finally {
         setLoading(false)
       }
     }
-
     fetchNoteDetail()
   }, [location, navigate])
 
@@ -93,14 +94,16 @@ export default function NoteDetail () {
       <div className={styles['note-content']}>
         <div className={styles['tab']}>
           <span className={styles['note_type']}>{noteDetail.note_type}</span>
-          <span className={styles['author']}>{noteDetail.username}</span>
+          <span className={styles['author']}>{userInfo.nickname}</span>
         </div>
-      </div>
-      <p className={styles['title']}>{noteDetail.note_title}</p>
-      <div className={styles['content']}>
-        {noteDetail.note_content && noteDetail.note_content.split('\n').map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
+        <p className={styles['title']}>{noteDetail.note_title}</p>
+        <div className={styles['content']}>
+          {noteDetail.note_content && (
+            <div
+              dangerouslySetInnerHTML={{ __html: noteDetail.note_content, }}
+            />
+          )}
+        </div>
       </div>
     </div>
   )
